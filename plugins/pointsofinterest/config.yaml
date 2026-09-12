@@ -1,0 +1,64 @@
+plugin:
+  name: pointsofinterest
+  wrapper: [poi_wrapper]
+  logits_processors: [poi_logits_processor, poi_restricted_logits_processor]
+  sequence_processor: [poi_sequence_processor]
+  schema:
+    module: schemas
+    get:
+      info: poi_wrapper.info
+    post:
+      recommend: run
+      search: poi_wrapper.search
+
+wrapper:
+  pearlm:
+    name: poi_wrapper
+    device: "cuda:1" # "cuda" or "cpu"
+    diversity_factor: 0.3
+    recommendation_count: 3
+    propagate_connected_entities: false  # If true, entities connected with restricted KG elements will also be restricted
+    compile_mode: "default"  # Options: "default", "reduce-overhead", "max-autotune"
+    remove_user_tokens_from_sequences: false  # If true, user tokens will be removed from sequences in zero-shot recommendation
+    tag_offset: 0.1  # Offset for accepting tag matching vs other matching in zero-shot recommendation
+  
+    force_paths: # Sequences of relation types to force in the generated paths
+      - ['HAS_SENSORY_FEATURE', 'HAS_SENSORY_FEATURE_r'] # type 2. [I] [HAS_SENSORY_FEATURE] [E: sensory_feature] [HAS_SENSORY_FEATURE_r] [I]
+      - ['[UI-Relation]', '[UI-Relation]'] # type 4. [I] [UI-Relation] [U] [UI-Relation] [I]
+      - ['HAS_SENSORY_FEATURE_r'] # type 6. [E: sensory_feature] [HAS_SENSORY_FEATURE_r] [I]
+      - ['HAS_SENSORY_COMPATIBILITY_r', '[UI-Relation]'] # TYPE 7. [E: sensory_feature] [HAS_SENSORY_COMPATIBILITY_r] [U] [UI-Relation] [I]
+      - ['HAS_SENSORY_FEATURE', 'HAS_SENSORY_FEATURE_r', '[UI-Relation]'] # TYPE 7 (variance)
+    
+    force_path_explanations:
+      - "We recommend %(I2) because you liked %(I1), which has a similar level of %(E1)"
+      - "We recommend %(I2) because it was liked by someone who, like you, liked %(I1)"
+      - "We recommend %(I1) because it has a level of %(E1) that matches your preferences"
+      - "We recommend %(I1) because it was liked by someone with a sensitivity to %(E1) similar to yours"
+      - "We recommend %(I2) because it was liked by someone with a sensitivity to %(E1) similar to yours"
+
+    better_readability: true  # If true, item tokens in explanations will be wrapped in <strong> tags for better readability in the UI
+    load_col_item: ["poi_id", "name"]
+
+sequence_processor:
+  poi_sequence_processor:
+    name: poi_sequence_processor
+    force_paths: # Sequences of relation types to force in the generated paths
+      - ['HAS_SENSORY_FEATURE', 'HAS_SENSORY_FEATURE_r'] # type 2. [I] [HAS_SENSORY_FEATURE] [E: sensory_feature] [HAS_SENSORY_FEATURE_r] [I]
+      - ['[UI-Relation]', '[UI-Relation]'] # type 4. [I] [UI-Relation] [U] [UI-Relation] [I]
+      - ['HAS_SENSORY_FEATURE_r'] # type 6. [E: sensory_feature] [HAS_SENSORY_FEATURE_r] [I]
+      - ['HAS_SENSORY_COMPATIBILITY_r', '[UI-Relation]'] # TYPE 7. [E: sensory_feature] [HAS_SENSORY_COMPATIBILITY_r] [U] [UI-Relation] [I]
+      - ['HAS_SENSORY_FEATURE', 'HAS_SENSORY_FEATURE_r', '[UI-Relation]'] # TYPE 7 (variance)
+
+
+logits_processors:
+  poi_logits_processor:
+    name: poi_logits_processor
+    force_paths:
+      - ['HAS_SENSORY_FEATURE', 'HAS_SENSORY_FEATURE_r'] # type 2. [I] [HAS_SENSORY_FEATURE] [E: sensory_feature] [HAS_SENSORY_FEATURE_r] [I]
+      - ['[UI-Relation]', '[UI-Relation]'] # type 4. [I] [UI-Relation] [U] [UI-Relation] [I]
+      - ['HAS_SENSORY_FEATURE_r'] # type 6. [E: sensory_feature] [HAS_SENSORY_FEATURE_r] [I]
+      - ['HAS_SENSORY_COMPATIBILITY_r', '[UI-Relation]'] # TYPE 7. [E: sensory_feature] [HAS_SENSORY_COMPATIBILITY_r] [U] [UI-Relation] [I]
+      - ['HAS_SENSORY_FEATURE', 'HAS_SENSORY_FEATURE_r', '[UI-Relation]'] # TYPE 7 (variance)
+  poi_restricted_logits_processor:
+    name: poi_restricted_logits_processor
+    propagate_connected_entities: false

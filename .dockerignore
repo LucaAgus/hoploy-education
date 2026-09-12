@@ -1,0 +1,35 @@
+# Git
+.git
+.gitignore
+
+# Python cache
+__pycache__
+*.py[cod]
+*.pyo
+.venv
+.uv
+
+# Plugins: forniti via bind-mount a runtime (non inclusi nell'immagine)
+plugins/
+
+# Dati pesanti (montati come volumi)
+datasets/
+checkpoints/
+
+# Dev & test
+tests/
+.pytest_cache
+*.ipynb
+.ipynb_checkpoints
+
+# Editor / OS
+.vscode
+.idea
+*.swp
+*.swo
+.DS_Store
+
+# Build artifacts
+dist/
+*.egg-info/
+build/

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profiling Path</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="wizard">
+
+  <div class="brand">
+    <span class="brand-name">Pathway</span>
+  </div>
+
+  <div class="syllabus" id="syllabus">
+    <div class="syllabus-fill" id="syllabusFill"></div>
+    <div class="chapter is-active" data-step="1">
+      <div class="chapter-dot"><span>01</span></div>
+      <div class="chapter-label">Nickname</div>
+    </div>
+    <div class="chapter" data-step="2">
+      <div class="chapter-dot"><span>02</span></div>
+      <div class="chapter-label">Interests</div>
+    </div>
+    <div class="chapter" data-step="3">
+      <div class="chapter-dot"><span>03</span></div>
+      <div class="chapter-label">Courses</div>
+    </div>
+    <div class="chapter" data-step="4">
+      <div class="chapter-dot"><span>04</span></div>
+      <div class="chapter-label">Recommendations</div>
+    </div>
+  </div>
+
+  <div class="card">
+
+    <!-- ============ STEP 1 ============ -->
+    <section class="step-panel" id="step1" data-step-panel="1">
+      <p class="step-eyebrow">Step 01 · Nickname</p>
+      <h1 class="step-title">Welcome! Enter your nickname to start.</h1>
+      <p class="step-sub">We need a few details to build a path tailored to you.</p>
+
+      <div class="field">
+        <label for="nameInput">Nickname</label>
+        <input type="text" id="nameInput" placeholder="E.g. Julia" autocomplete="given-name">
+        <p class="field-hint">We'll only use this nickname to personalize your experience.</p>
+      </div>
+
+      <div class="actions single">
+        <button class="btn-primary" id="toStep2" disabled>Next</button>
+      </div>
+    </section>
+
+    <!-- ============ STEP 2 ============ -->
+    <section class="step-panel hidden" id="step2" data-step-panel="2">
+      <p class="step-eyebrow">Step 02 · Interests</p>
+      <h1 class="step-title">Tell us more about your interests</h1>
+<p class="step-sub">Expand each section to search our lists. Selections are optional — pick up to <span id="fieldSelectionLimit"></span> per section for more accurate recommendations.</p>
+      <div class="filters" id="filters"><!-- populated by renderFilters() in js/app.js --></div>
+
+      <div class="actions">
+        <button class="btn-ghost" id="toStep1">Back</button>
+        <button class="btn-primary" id="toStep3">Continue</button>
+      </div>
+    </section>
+
+    <!-- ============ STEP 3 — course picker ============ -->
+    <section class="step-panel hidden" id="step3" data-step-panel="3">
+      <p class="step-eyebrow">Step 03 · Courses</p>
+      <h1 class="step-title">Which courses catch your eye?</h1>
+      <p class="step-sub">Pick at least one course so we know what to base your recommendations on. Browse a random sample below, or search for something specific.</p>
+
+      <div class="course-picker">
+        <div class="course-count-row">
+          <span class="filter-total" id="courseTotalCount"></span>
+          <span class="filter-count" id="courseCountBadge">0</span>
+        </div>
+        <div class="selected-chips" id="courseSelectedChips"></div>
+        <div class="search-wrap">
+          <input type="text" class="search-input" id="courseSearchInput" placeholder="Search courses…" autocomplete="off">
+        </div>
+        <div class="course-card-list" id="courseOptionList"></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-ghost" id="toStep2From3">Back</button>
+        <button class="btn-primary" id="toStep4" disabled>See recommendations</button>
+      </div>
+    </section>
+
+    <!-- ============ STEP 4 ============ -->
+    <section class="step-panel hidden" id="step4" data-step-panel="4">
+      <p class="step-eyebrow">Step 04 · Result</p>
+      <h1 class="step-title" id="step4Title">Here's what we found</h1>
+      <p class="step-sub" id="step4Sub">Based on your choices, these courses might interest you.</p>
+
+      <div class="loading-wrap" id="loadingState">
+        <div class="spinner"></div>
+        <p class="loading-text">ANALYZING YOUR PREFERENCES…</p>
+        <div class="skeleton-list">
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+        </div>
+      </div>
+
+      <div class="reco-list hidden" id="recoList"></div>
+      <p class="status-line" id="recoError"></p>
+
+      <div class="actions hidden" id="step4Actions">
+        <button class="btn-ghost" id="editChoices">Edit choices</button>
+        <button class="btn-primary" id="restart">Start over</button>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Backend calls go to /api/... , reverse-proxied by nginx to the hoploy
+     container — see frontend/nginx.conf.template. No runtime config file
+     needed here. -->
+<script src="js/app.js"></script>
+</body>
+</html>

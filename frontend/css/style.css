@@ -1,0 +1,307 @@
+/* ============================================================
+   DESIGN TOKENS — "syllabus" palette: midnight blue
+   ink + notes gold + chalkboard green, on cold paper.
+   ============================================================ */
+:root{
+  --ink:        #16213D;
+  --ink-soft:   #3A4666;
+  --muted:      #7A8299;
+  --paper:      #EEF1EC;
+  --surface:    #FFFFFF;
+  --line:       #DBDFD6;
+  --gold:       #C0983E;
+  --gold-ink:   #7A5F1E;
+  --gold-tint:  #FBF3DF;
+  --gold-line:  #E9D9AC;
+  --teal:       #2E6F6B;
+  --teal-dark:  #1F4E4B;
+  --teal-tint:  #E4EEEC;
+  --danger:     #B5482F;
+
+  --radius-s: 6px;
+  --radius-m: 10px;
+  --radius-l: 16px;
+
+  --font-display: 'Inter', -apple-system, sans-serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'Inter', -apple-system, sans-serif;
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  background:var(--paper);
+  background-image: radial-gradient(circle at 1px 1px, rgba(22,33,61,0.05) 1px, transparent 0);
+  background-size: 22px 22px;
+  color:var(--ink);
+  font-family:var(--font-body);
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding: 48px 16px;
+}
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
+}
+
+.wizard{ width:100%; max-width: 700px; }
+
+.brand{ display:flex; align-items:baseline; gap:10px; margin-bottom:28px; }
+.brand-mark{
+  font-family:var(--font-mono); font-size:12px; letter-spacing:0.14em;
+  color:var(--gold-ink); background:var(--gold-tint); border:1px solid var(--gold-line);
+  padding:3px 8px; border-radius: var(--radius-s);
+}
+.brand-name{ font-family:var(--font-display); font-weight:600; font-size:18px; color:var(--ink); }
+
+/* ============================================================
+   SIGNATURE: "syllabus chapters" bar
+   ============================================================ */
+.syllabus{ position:relative; display:grid; grid-template-columns: repeat(4, 1fr); margin-bottom: 32px; }
+.syllabus::before{
+  content:''; position:absolute; top:17px; left:6%; right:6%; height:2px;
+  background: repeating-linear-gradient(90deg, var(--line) 0 6px, transparent 6px 11px);
+  z-index:0;
+}
+.syllabus-fill{
+  position:absolute; top:17px; left:6%; height:2px; background:var(--gold);
+  z-index:1; width:0%; transition: width 420ms cubic-bezier(.65,0,.35,1);
+}
+.chapter{ position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; }
+.chapter-dot{
+  width:34px; height:34px; border-radius:50%; background:var(--surface); border:2px solid var(--line);
+  display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:12px;
+  color:var(--muted); transition: all 300ms ease;
+}
+.chapter-label{ font-size:12px; color:var(--muted); font-weight:600; transition: color 300ms ease; }
+.chapter.is-active .chapter-dot{ background:var(--gold); border-color:var(--gold); color:#fff; transform: translateY(-3px); box-shadow: 0 4px 10px rgba(192,152,62,0.35); }
+.chapter.is-active .chapter-label{ color:var(--ink); }
+.chapter.is-done .chapter-dot{ background:var(--teal); border-color:var(--teal); color:#fff; }
+.chapter.is-done .chapter-dot::after{ content:'✓'; }
+.chapter.is-done .chapter-dot span{ display:none; }
+.chapter.is-done .chapter-label{ color:var(--teal-dark); }
+
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-l);
+  padding:40px 36px; box-shadow: 0 1px 2px rgba(22,33,61,0.04), 0 12px 32px -16px rgba(22,33,61,0.18);
+}
+@media (max-width:480px){ .card{ padding:26px 18px; } }
+
+.step-eyebrow{ font-family:var(--font-mono); font-size:11px; letter-spacing:0.14em; color:var(--teal-dark); text-transform:uppercase; margin:0 0 10px; }
+.step-title{ font-family:var(--font-display); font-weight:600; font-size:clamp(24px, 4vw, 30px); line-height:1.2; margin:0 0 8px; color:var(--ink); }
+.step-sub{ font-size:14.5px; color:var(--ink-soft); margin:0 0 26px; line-height:1.5; }
+
+.step-panel{ animation: rise 380ms cubic-bezier(.2,.8,.2,1); }
+@keyframes rise{ from{ opacity:0; transform:translateY(10px); } to{ opacity:1; transform:translateY(0); } }
+
+/* ============================================================
+   STEP 1
+   ============================================================ */
+.field{ margin-bottom:22px; }
+.field label{ display:block; font-size:13px; font-weight:600; color:var(--ink); margin-bottom:8px; }
+.field-hint{ font-size:12.5px; color:var(--muted); margin-top:6px; }
+input[type="text"]{
+  width:100%; font-family:var(--font-body); font-size:15.5px; padding:13px 14px;
+  border:1.5px solid var(--line); border-radius:var(--radius-m); background:var(--paper); color:var(--ink);
+  transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+input[type="text"]:focus{ outline:none; border-color:var(--teal); background:var(--surface); box-shadow: 0 0 0 4px var(--teal-tint); }
+input[type="text"]::placeholder{ color:#A7ACBB; }
+
+/* ============================================================
+   STEP 2 — searchable accordion filters
+   Each field is a panel: header with count, body
+   with selected chips + search + scrollable filtered list.
+   Designed for lists from 4 to ~13,000 items.
+   ============================================================ */
+.filters{ display:flex; flex-direction:column; gap:10px; margin-bottom:8px; }
+
+.filter-block{
+  border:1.5px solid var(--line); border-radius:var(--radius-m); overflow:hidden;
+  background:var(--paper); transition: border-color 160ms ease;
+}
+.filter-block.is-open{ border-color:var(--teal); background:var(--surface); }
+
+.filter-head{
+  width:100%; display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:14px 16px; background:transparent; border:none; cursor:pointer; text-align:left;
+  font-family:var(--font-body);
+}
+.filter-head-left{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+.filter-label{ font-size:14.5px; font-weight:600; color:var(--ink); }
+.filter-preview{ font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:340px; }
+.filter-head-right{ display:flex; align-items:center; gap:10px; flex:0 0 auto; }
+.filter-total{ font-family:var(--font-mono); font-size:11px; color:var(--muted); }
+.filter-count{
+  font-family:var(--font-mono); font-size:11px; font-weight:600; color:#fff;
+  background:var(--muted); border-radius:999px; padding:2px 8px; min-width:20px; text-align:center;
+  transition: background 160ms ease;
+}
+.filter-count.has-selection{ background:var(--teal); }
+.filter-count.at-limit{ background:var(--gold-ink); }
+.chevron{ color:var(--muted); font-size:14px; transition: transform 220ms ease; }
+.filter-block.is-open .chevron{ transform:rotate(180deg); }
+
+.filter-body{
+  max-height:0; opacity:0; overflow:hidden;
+  transition: max-height 260ms cubic-bezier(.2,.8,.2,1), opacity 200ms ease;
+  padding:0 16px;
+}
+.filter-block.is-open .filter-body{ max-height:420px; opacity:1; padding:0 16px 16px; }
+
+.selected-chips{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+.selected-chips:empty{ display:none; }
+.chip-selected{
+  display:inline-flex; align-items:center; gap:6px; font-size:12.5px; font-weight:600;
+  background:var(--teal); color:#fff; border-radius:999px; padding:5px 8px 5px 12px;
+}
+.chip-selected button{
+  all:unset; cursor:pointer; width:16px; height:16px; display:flex; align-items:center; justify-content:center;
+  border-radius:50%; background:rgba(255,255,255,0.25); font-size:11px; line-height:1;
+}
+.chip-selected button:hover{ background:rgba(255,255,255,0.4); }
+.chip-selected button:focus-visible{ outline:2px solid #fff; outline-offset:1px; }
+
+.search-wrap{ position:relative; }
+.search-input{
+  width:100%; font-family:var(--font-body); font-size:14px; padding:10px 12px 10px 34px;
+  border:1.5px solid var(--line); border-radius:var(--radius-s); background:var(--surface); color:var(--ink);
+}
+.search-input:focus{ outline:none; border-color:var(--teal); box-shadow: 0 0 0 3px var(--teal-tint); }
+
+.search-scope-hint{ font-size:11.5px; color:var(--muted); margin:6px 2px 0; }
+
+.option-list{
+  margin-top:10px; border:1px solid var(--line); border-radius:var(--radius-s);
+  max-height:190px; overflow-y:auto; background:var(--surface);
+}
+.option-row{
+  display:block; width:100%; text-align:left; background:none; border:none; cursor:pointer;
+  padding:9px 12px; font-size:13.5px; color:var(--ink-soft); font-family:var(--font-body);
+  border-bottom:1px solid var(--line);
+}
+.option-row:last-child{ border-bottom:none; }
+.option-row:hover, .option-row.is-focused{ background:var(--teal-tint); color:var(--teal-dark); }
+.option-row mark{ background:var(--gold-tint); color:var(--gold-ink); border-radius:2px; padding:0 1px; }
+.option-empty{ padding:14px 12px; font-size:13px; color:var(--muted); text-align:center; }
+.option-more{ padding:8px 12px; font-size:11.5px; color:var(--muted); text-align:center; background:var(--paper); }
+
+/* Step 3 course picker: search input reused as-is from Step 2. The result
+   area itself (.course-card-list) is new — flows naturally like Step 4's
+   .reco-list instead of the old boxed, internally-scrolling row list this
+   replaces, since cards carry more visual weight than compact rows. */
+.course-picker{ margin-bottom: 8px; }
+.course-count-row{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.course-picker .selected-chips{ margin-bottom: 10px; }
+.course-card-list{ display:flex; flex-direction:column; gap:10px; margin-top:10px; }
+.course-sample-hint{ font-size:12px; color:var(--muted); font-style:italic; margin:0 0 4px; }
+
+/* Step 3 cards reuse .reco-card/.reco-card-trigger/.reco-details and the
+   whole tag-group/truncate machinery directly from Step 4 (below) — same
+   CSS rules, not a copy. Only two things are new here: this wrapper (to
+   fit a Select button beside the trigger — a <button> can't nest inside
+   another <button>) and the Select button itself. */
+.reco-card.is-selected{ border-color:var(--teal); }
+.course-card-top{ display:flex; align-items:center; gap:10px; }
+.course-card-top .reco-card-trigger{ flex:1; min-width:0; }
+.course-select-btn{
+  flex:0 0 auto; font-family:var(--font-body); font-size:12.5px; font-weight:600;
+  padding:8px 14px; border-radius:999px; cursor:pointer; white-space:nowrap;
+  background:transparent; color:var(--teal-dark); border:1.5px solid var(--teal);
+  transition: all 150ms ease;
+}
+.course-select-btn:hover:not(:disabled){ background:var(--teal-tint); }
+.course-select-btn.is-selected{ background:var(--teal); color:#fff; }
+.course-select-btn.is-selected:hover{ background:var(--teal-dark); border-color:var(--teal-dark); }
+.course-select-btn:disabled{ opacity:0.4; cursor:not-allowed; }
+.course-select-btn:focus-visible{ outline:3px solid var(--gold); outline-offset:2px; }
+
+/* ============================================================
+   STEP 3
+   ============================================================ */
+.loading-wrap{ display:flex; flex-direction:column; align-items:center; padding:32px 0 12px; gap:18px; }
+.spinner{ width:34px; height:34px; border-radius:50%; border:3px solid var(--line); border-top-color:var(--gold); animation: spin 800ms linear infinite; }
+@keyframes spin{ to{ transform:rotate(360deg); } }
+.loading-text{ font-family:var(--font-mono); font-size:12.5px; color:var(--muted); letter-spacing:0.04em; }
+.skeleton-list{ width:100%; display:flex; flex-direction:column; gap:12px; }
+.skeleton-card{
+  height:78px; border-radius:var(--radius-m);
+  background:linear-gradient(90deg, var(--paper) 25%, #E4E7DF 37%, var(--paper) 63%);
+  background-size:400% 100%; animation: shimmer 1.4s ease infinite;
+}
+@keyframes shimmer{ 0%{ background-position:100% 50%; } 100%{ background-position:0 50%; } }
+
+.reco-list{ display:flex; flex-direction:column; gap:12px; margin-bottom:8px; }
+.reco-card{ border:1.5px solid var(--line); border-radius:var(--radius-m); padding:16px 18px; transition: border-color 160ms ease; }
+.reco-card:hover{ border-color:var(--teal); }
+.reco-card-trigger{
+  all: unset;
+  box-sizing: border-box;
+  display:flex; gap:14px; align-items:flex-start;
+  width:100%; cursor:pointer;
+}
+.reco-card-trigger:focus-visible{ outline:3px solid var(--gold); outline-offset:2px; border-radius:var(--radius-s); }
+.reco-body{ flex:1; min-width:0; }
+.reco-title{ font-family:var(--font-display); font-weight:600; font-size:17px; color:var(--ink); margin:0 0 4px; }
+.reco-meta{ font-size:12.5px; color:var(--muted); margin:0 0 8px; }
+.reco-explain{ font-size:12px; color:var(--teal-dark); font-family:var(--font-mono); margin:0 0 8px; line-height:1.5; }
+.tag{ font-size:11.5px; font-weight:600; padding:3px 9px; border-radius:999px; background:var(--teal-tint); color:var(--teal-dark); }
+.reco-right{ display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex:0 0 auto; }
+.reco-match{ text-align:right; font-family:var(--font-mono); font-size:13px; color:var(--teal-dark); font-weight:600; }
+.reco-chevron{ color:var(--muted); font-size:14px; transition: transform 220ms ease; }
+.reco-card.is-open .reco-chevron{ transform:rotate(180deg); }
+
+/* Expandable "characteristics" panel — same max-height transition and
+   chip-group pattern as the Step 2 filter accordion, applied here to a
+   recommendation card instead of a filter field. */
+.reco-details{
+  max-height:0; opacity:0; overflow:hidden;
+  transition: max-height 320ms cubic-bezier(.2,.8,.2,1), opacity 220ms ease, margin-top 320ms ease;
+}
+.reco-card.is-open .reco-details{
+  max-height:2000px; opacity:1; margin-top:14px; padding-top:14px; border-top:1px solid var(--line);
+  overflow-y:auto;
+}
+.reco-feature-group{ margin-bottom:12px; }
+.reco-feature-group:last-child{ margin-bottom:0; }
+.reco-feature-label{ font-family:var(--font-mono); font-size:11px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; color:var(--muted); margin:0 0 7px; }
+.reco-feature-tags{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+.reco-objectives{ margin:0; padding-left:18px; font-size:12.5px; color:var(--ink-soft); line-height:1.6; }
+.reco-objectives li{ margin-bottom:2px; }
+.reco-no-details{ font-size:12.5px; color:var(--muted); margin:0; }
+
+/* Truncate-then-expand: extra tags/bullets exist in the DOM but stay
+   hidden until "+N more" is clicked (see initRecommendationCards). Two
+   separate hidden classes because a <span class="tag"> and a <li> need
+   different display values when revealed. */
+.reco-tag-hidden{ display:none; }
+.reco-feature-group.is-expanded .reco-tag-hidden{ display:inline; }
+.reco-objective-hidden{ display:none; }
+.reco-feature-group.is-expanded .reco-objective-hidden{ display:list-item; }
+.reco-show-more{
+  all:unset; cursor:pointer; box-sizing:border-box;
+  display:inline-block; margin-top:6px;
+  font-size:11.5px; font-weight:600; color:var(--teal-dark);
+  text-decoration:underline; text-underline-offset:2px;
+}
+.reco-show-more:hover{ color:var(--teal); }
+.reco-show-more:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; border-radius:2px; }
+.reco-feature-group.is-expanded .reco-show-more{ display:none; }
+
+/* ============================================================
+   ACTIONS
+   ============================================================ */
+.actions{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:28px; padding-top:24px; border-top:1px solid var(--line); }
+.actions.single{ justify-content:flex-end; }
+button{ font-family:var(--font-body); font-size:14.5px; font-weight:600; border-radius:var(--radius-m); padding:12px 22px; cursor:pointer; border:1.5px solid transparent; transition: all 150ms ease; }
+button:focus-visible{ outline:3px solid var(--gold); outline-offset:2px; }
+.btn-primary{ background:var(--ink); color:#fff; border-color:var(--ink); }
+.btn-primary:hover:not(:disabled){ background:var(--teal-dark); border-color:var(--teal-dark); }
+.btn-primary:disabled{ background:#C9CDD8; border-color:#C9CDD8; color:#fff; cursor:not-allowed; }
+.btn-ghost{ background:transparent; color:var(--ink-soft); border-color:var(--line); }
+.btn-ghost:hover{ border-color:var(--ink-soft); color:var(--ink); }
+
+.hidden{ display:none !important; }
+.status-line{ font-size:12.5px; color:var(--danger); margin-top:10px; min-height:16px; }

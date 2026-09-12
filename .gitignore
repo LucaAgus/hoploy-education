@@ -1,0 +1,11 @@
+checkpoints/*
+datasets/*
+logs/*
+stats/*
+scripts/*
+.env
+__pycache__/
+patch/
+z_to_deletecheckpoints/
+z_to_delete/
+frontend/data/
