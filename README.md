@@ -242,23 +242,6 @@ hoploy-education/
 - G. Balloccu, L. Boratto, G. Fenu, M. Marras, A. Soccol. *KGGLM: A generative language model for generalizable knowledge graph representation learning in recommendation.* RecSys, ACM, 2024.
 - D. Dessì, G. Fenu, M. Marras, D. Reforgiato Recupero. *COCO: Semantic-enriched collection of online courses at scale with experimental use cases.* WorldCIST, Springer, 2018.decoding paradigm used in path-reasoning models. Multiple processors can be composed in declaration order. Processors operate on KG-aware candidate representations exposed by the framework, so plugin authors express decoding behaviour in terms of entities and relations without manipulating tokenizer internals directly.
 
-The framework provides default processors for common behaviours: graph-valid traversal constraints, masking of previously recommended items, entity restrictions, and relation-pattern forcing. Plugins can reuse these defaults or specialize them.
-
-#### Sequence Processor
-
-The sequence processor operates after candidate paths have been produced and before they are returned to the wrapper for expansion. Unlike logits processors, it receives complete generated paths and can therefore apply operations such as duplicate removal, invalid sequence filtering, score-based sorting, or domain-specific re-ranking. This component is optional.
-
-### Request Lifecycle
-
-For each incoming recommendation request, Hoploy executes a fixed four-step sequence:
-
-1. **Input distillation** — the wrapper maps the request payload to model-compatible inputs. Selected items are resolved through the catalog and converted into the representation expected by the Hopwise model.
-2. **Request-specific configuration** — the wrapper and optional processors derive inference parameters from the request (number of recommendations, entity restrictions, etc.).
-3. **Path generation** — the framework executes the recommendation procedure, running the underlying Hopwise model to produce candidate reasoning paths. Plugin-defined logits and sequence processors influence decoding through their configured hooks.
-4. **Output expansion** — the wrapper converts the generated paths back into KG triples, enriches them with catalog metadata, and renders the application response including recommendations and human-readable explanations.
-
-Plugins can customize how requests are interpreted, how decoding is constrained, how generated paths are post-processed, and how explanations are rendered. They do not re-implement the generic inference workflow, the model prediction procedure, or the token selection loop.
-
 
 ## Tutorial
 You can find a tutorial that walks through building and deploying a Hoploy plugin from scratch here: [Hoploy](https://github.com/tail-unica/hoploy).
