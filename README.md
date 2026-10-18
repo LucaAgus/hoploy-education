@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/d6a78d46-0a5c-4c25-9b51-3a80968fafd9
+
 <h1 align="center">🐸 Hoploy</h1>
 <p align="center">
   <b>Serving layer for <a href="https://github.com/tail-unica/hopwise">Hopwise</a> recommendation models.</b>
