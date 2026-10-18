@@ -136,10 +136,9 @@ Inverse relations and the learner–course interaction relation are added automa
 
 ## Installation
 
-This plugin requires a working installation of [Hoploy](https://github.com/tail-unica/hoploy). Clone Hoploy first and follow its setup instructions, then clone this repository:
+This repository contains everything you need to run Hoploy with the Education plugin out of the box. For more detailed information about the core system, you can check the [Hoploy](https://github.com/tail-unica/hoploy) repository. To get started, clone this repository:
 
 ```bash
-git clone https://github.com/tail-unica/hoploy
 git clone https://github.com/LucaAgus/hoploy-education
 ```
 
